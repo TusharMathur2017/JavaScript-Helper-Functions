@@ -69,6 +69,40 @@ export class SearchApp extends TeamsActivityHandler {
 
 
 
+    // function divideTimeRange(timeRange) {
+    //   // Parse the start and end times from the input string
+    //   const parts = timeRange.split(" end: ");
+    //   const startTime = new Date(parts[0].split("start: ")[1]);
+    //   const endTime = new Date(parts[1]);
+    
+    //   // Create an empty array to store the timestamps
+    //   const timestamps = [];
+    
+    //   // Loop through the time range, adding 30-minute intervals until we reach the end time
+    //   while (startTime <= endTime) {
+    //     timestamps.push(startTime.toISOString());
+    //     startTime.addMinutes(30);
+    //   }
+    
+    //   return timestamps;
+    // }
+    
+    // // Example usage
+    // const timeRange = "start: 2023-12-19T09:00:00 end: 2023-12-19T10:30:00";
+    // const timestamps = divideTimeRange(timeRange);
+    
+    // console.log("Time range:");
+    // console.log(timeRange);
+    // console.log("30-minute slots:");
+    // console.log(timestamps.join(", "));
+    
+
+
+
+
+
+
+
 
 
     const attachments = [];
