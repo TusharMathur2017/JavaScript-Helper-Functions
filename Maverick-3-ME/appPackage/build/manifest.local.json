@@ -1,0 +1,59 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.16",
+    "version": "1.0.0",
+    "id": "f6d0ffa5-9886-4eda-a3ed-bd9340c020e4",
+    "packageName": "com.microsoft.teams.extension",
+    "developer": {
+        "name": "Teams App, Inc.",
+        "websiteUrl": "https://www.example.com",
+        "privacyUrl": "https://www.example.com/termofuse",
+        "termsOfUseUrl": "https://www.example.com/privacy"
+    },
+    "icons": {
+        "color": "color.png",
+        "outline": "outline.png"
+    },
+    "name": {
+        "short": "Maverick-3-MElocal",
+        "full": "full name for Maverick-3-ME"
+    },
+    "description": {
+        "short": "Find npm package by name.",
+        "full": "Find npm package according to the npm package name."
+    },
+    "accentColor": "#FFFFFF",
+    "bots": [],
+    "composeExtensions": [
+        {
+            "botId": "13c8076c-4554-41a9-ae78-79a90de0a6f3",
+            "commands": [
+                {
+                    "id": "findNpmPackage",
+                    "context": [
+                        "compose",
+                        "commandBox"
+                    ],
+                    "description": "Find npm package according to the npm package name",
+                    "title": "Find Npm Package",
+                    "type": "query",
+                    "parameters": [
+                        {
+                            "name": "NpmPackageName",
+                            "title": "Npm Package Name",
+                            "description": "The name of the npm package to be searched",
+                            "inputType": "text"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "configurableTabs": [],
+    "staticTabs": [],
+    "permissions": [
+        "identity",
+        "messageTeamMembers"
+    ],
+    "validDomains": []
+}
