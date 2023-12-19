@@ -76,6 +76,8 @@ export class SearchApp extends TeamsActivityHandler {
     console.log(response);
     console.log("");
 
+    response.availabilityView.split('')
+
     const attachments = [];
     response.data.objects.forEach((obj) => {
       const template = new ACData.Template(helloWorldCard);
