@@ -74,6 +74,7 @@ export class SearchApp extends TeamsActivityHandler {
 
     const response = await graphClient.api('/users/calendar/getSchedule')
       .post(scheduleInformation);
+      
     console.log(response);
     console.log("");
 
