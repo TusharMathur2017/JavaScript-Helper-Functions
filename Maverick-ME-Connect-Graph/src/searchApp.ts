@@ -41,30 +41,30 @@ export class SearchApp extends TeamsActivityHandler {
     const authProvider = new TokenCredentialAuthenticationProvider(credential, { scopes: ["https://graph.microsoft.com/.default"] });
     const graphClient = Client.initWithMiddleware({ authProvider: authProvider });
 
-    'Least@42tcm.onmicrosoft.com'; 'tushar_mathur@42tcm.onmicrosoft.com',"2023-12-20T09:00:00"
-    let startTime = query.parameters[0].value;
-    let endTime = query.parameters[1].value;
-    let timeInterval = query.parameters[3].value;
-    let attendeesString = query.parameters[4].value;
-    let attendeesArray = attendeesString.Split(";");
+    // "2023-12-20",30,Least@42tcm.onmicrosoft.com
+    let tDate = query.parameters[0].value;
+    let startTime = `${tDate}T09:00:00`;
+    let endTime = `${tDate}T18:00:00`;
+    let timeInterval = query.parameters[1].value;
+    let attendeesString = query.parameters[2].value;
 
     console.clear();
     console.log("**************");
     console.log("");
 
-    let timestamps = divideTimeRange("2023-12-20T09:00:00", "2023-12-20T11:00:00", 30)
-    console.log(timestamps.join(", "));
+    let timeSlots = divideTimeRange(startTime, endTime, 30)
+    console.log(timeSlots.join(", "));
     console.log("");
 
     let scheduleInformation = {
-      schedules: attendeesArray, //['Least@42tcm.onmicrosoft.com', 'tushar_mathur@42tcm.onmicrosoft.com'],
+      schedules: attendeesString, //['Least@42tcm.onmicrosoft.com', 'tushar_mathur@42tcm.onmicrosoft.com'],
       startTime: {
-        dateTime: startTime, //'2023-12-19T09:00:00'
-        timeZone: 'India Standard Time'
+        dateTime: startTime,
+        timeZone: 'Coordinated Universal Time'
       },
       endTime: {
-        dateTime: endTime, //'2023-12-19T10:30:00',
-        timeZone: 'India Standard Time'
+        dateTime: endTime,
+        timeZone: 'Coordinated Universal Time'
       },
       availabilityViewInterval: timeInterval
     };
@@ -103,6 +103,15 @@ export class SearchApp extends TeamsActivityHandler {
 function divideTimeRange(startTime, endTime, duration) {
   let stTime = new Date(startTime);
   let enTime = new Date(endTime);
+
+  var st_UTC = Date.UTC(stTime.getUTCFullYear(), stTime.getUTCMonth(),
+    stTime.getUTCDate(), stTime.getUTCHours(),
+    stTime.getUTCMinutes(), stTime.getUTCSeconds());
+
+  var en_UTC = Date.UTC(enTime.getUTCFullYear(), enTime.getUTCMonth(),
+    enTime.getUTCDate(), enTime.getUTCHours(),
+    enTime.getUTCMinutes(), enTime.getUTCSeconds());
+
   const timestamps = [];
   while (stTime <= enTime) {
     timestamps.push(stTime);
