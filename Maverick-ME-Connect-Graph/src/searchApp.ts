@@ -41,30 +41,31 @@ export class SearchApp extends TeamsActivityHandler {
     const authProvider = new TokenCredentialAuthenticationProvider(credential, { scopes: ["https://graph.microsoft.com/.default"] });
     const graphClient = Client.initWithMiddleware({ authProvider: authProvider });
 
-    // "2023-12-20",30,Least@42tcm.onmicrosoft.com
-    let tDate = query.parameters[0].value;
+    // 2023-12-20,30,Least@42tcm.onmicrosoft.com
+    let dParams = query.parameters[0].value.split(",");
+    let tDate = dParams[0];
     let startTime = `${tDate}T09:00:00`;
     let endTime = `${tDate}T18:00:00`;
-    let timeInterval = query.parameters[1].value;
-    let attendeesString = query.parameters[2].value;
+    let timeInterval = dParams[1];
+    let attendeesString = dParams[2];
 
     console.clear();
     console.log("**************");
     console.log("");
 
-    let timeSlots = divideTimeRange(startTime, endTime, 30)
-    console.log(timeSlots.join(", "));
-    console.log("");
+    // let timeSlots = divideTimeRange(startTime, endTime, 30)
+    // // console.log(timeSlots.join(", "));
+    // console.log("");
 
     let scheduleInformation = {
-      schedules: attendeesString, //['Least@42tcm.onmicrosoft.com', 'tushar_mathur@42tcm.onmicrosoft.com'],
+      schedules: ['Least@42tcm.onmicrosoft.com', 'tushar_mathur@42tcm.onmicrosoft.com'],
       startTime: {
         dateTime: startTime,
-        timeZone: 'Coordinated Universal Time'
+        timeZone: 'India Standard Time'
       },
       endTime: {
         dateTime: endTime,
-        timeZone: 'Coordinated Universal Time'
+        timeZone: 'India Standard Time'
       },
       availabilityViewInterval: timeInterval
     };
@@ -103,22 +104,24 @@ export class SearchApp extends TeamsActivityHandler {
 }
 
 function divideTimeRange(startTime, endTime, duration) {
-  let stTime = new Date(startTime);
+
+  let snTime = new Date(startTime);
+  let st_UTC = Date.UTC(snTime.getUTCFullYear(), snTime.getUTCMonth(),
+    snTime.getUTCDate(), snTime.getUTCHours(),
+    snTime.getUTCMinutes(), snTime.getUTCSeconds());
+  let st_UTCDate = new Date(st_UTC);
+
   let enTime = new Date(endTime);
-
-  var st_UTC = Date.UTC(stTime.getUTCFullYear(), stTime.getUTCMonth(),
-    stTime.getUTCDate(), stTime.getUTCHours(),
-    stTime.getUTCMinutes(), stTime.getUTCSeconds());
-
-  var en_UTC = Date.UTC(enTime.getUTCFullYear(), enTime.getUTCMonth(),
+  let en_UTC = Date.UTC(enTime.getUTCFullYear(), enTime.getUTCMonth(),
     enTime.getUTCDate(), enTime.getUTCHours(),
     enTime.getUTCMinutes(), enTime.getUTCSeconds());
+  let en_UTCDate = new Date(en_UTC);
 
+  // console.log(`--> ${st_UTCDate}`);
   const timestamps = [];
-  while (stTime <= enTime) {
-    timestamps.push(stTime);
-    let nextSlot = new Date(stTime.getTime() + duration * 60000);
-    stTime = nextSlot;
+  while (st_UTCDate <= en_UTCDate) {
+    timestamps.push(st_UTCDate);
+    st_UTCDate = new Date(st_UTCDate.getTime() + duration * 60000);
   }
   return timestamps;
 }
