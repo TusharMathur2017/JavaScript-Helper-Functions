@@ -27,6 +27,7 @@
         "adaptivecards-templating": "^2.3.1",
         "botbuilder": "^4.20.0",
         "dotenv": "^16.3.1",
+        "path": "^0.12.7",
         "restify": "^11.1.0"
     },
     "devDependencies": {

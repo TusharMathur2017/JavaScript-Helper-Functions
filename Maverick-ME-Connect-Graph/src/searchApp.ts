@@ -41,6 +41,7 @@ export class SearchApp extends TeamsActivityHandler {
     const authProvider = new TokenCredentialAuthenticationProvider(credential, { scopes: ["https://graph.microsoft.com/.default"] });
     const graphClient = Client.initWithMiddleware({ authProvider: authProvider });
 
+    console.log('Token-> ${turnContext.Activity.Value}');
     // 2023-12-20,30,Least@42tcm.onmicrosoft.com
     let dParams = query.parameters[0].value.split(",");
     let tDate = dParams[0];
@@ -72,13 +73,13 @@ export class SearchApp extends TeamsActivityHandler {
     console.log(scheduleInformation);
     console.log("");
 
-    const response = await graphClient.api('/users/calendar/getSchedule')
+    const response = await graphClient.api('/users/tushar_mathur@42tcm.onmicrosoft.com/calendar/getSchedule')
       .post(scheduleInformation);
       
     console.log(response);
-    console.log("");
+    console.log("Hi");
 
-    response.availabilityView.split('')
+    // response.availabilityView.split('')
 
     const attachments = [];
     response.data.objects.forEach((obj) => {
