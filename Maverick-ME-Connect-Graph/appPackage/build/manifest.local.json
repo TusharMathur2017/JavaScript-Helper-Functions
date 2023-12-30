@@ -1,7 +1,7 @@
 {
     "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
     "manifestVersion": "1.16",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "id": "fc7021fd-2eba-4793-a230-312d77209ba2",
     "packageName": "com.microsoft.teams.extension",
     "developer": {
@@ -23,7 +23,15 @@
         "full": "Find npm package according to the npm package name."
     },
     "accentColor": "#FFFFFF",
-    "bots": [],
+    "bots": [
+        {
+            "botId": "6fde0d1d-d5f7-4b64-82a7-127ab35e27d5",
+            "scopes": [
+                "team",
+                "personal"
+            ]
+        }
+    ],
     "composeExtensions": [
         {
             "botId": "6fde0d1d-d5f7-4b64-82a7-127ab35e27d5",
@@ -32,7 +40,8 @@
                     "id": "findNpmPackage",
                     "context": [
                         "compose",
-                        "commandBox"
+                        "commandBox",
+                        "message"
                     ],
                     "description": "Find npm package according to the npm package name",
                     "title": "Find Npm Package",

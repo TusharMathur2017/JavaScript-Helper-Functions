@@ -11,6 +11,8 @@ import {
   TurnContext,
   MessagingExtensionQuery,
   MessagingExtensionResponse,
+  TeamsInfo,
+  TeamsPagedMembersResult
 } from "botbuilder";
 import * as ACData from "adaptivecards-templating";
 import helloWorldCard from "./adaptiveCards/helloWorldCard.json";
@@ -33,6 +35,21 @@ export class SearchApp extends TeamsActivityHandler {
     query: MessagingExtensionQuery
   ): Promise<MessagingExtensionResponse> {
 
+    let continuationToken: string;
+    const members = [];
+    do {
+      var pagedMembers = await TeamsInfo.getPagedMembers(context, 100, continuationToken);
+      continuationToken = pagedMembers.continuationToken;
+      // members.push(...pagedMembers.members.filter(m => !!m.email));
+      members.push(...pagedMembers.members);
+    }
+    while (continuationToken !== undefined)
+
+    console.clear();
+    members.forEach(eachMember => {
+      console.log(`Users-> ${eachMember.email}`);
+    });
+
     const credential = new ClientSecretCredential(
       process.env.TEAMS_APP_TENANT_ID,
       process.env.BOT_ID,
@@ -41,7 +58,7 @@ export class SearchApp extends TeamsActivityHandler {
     const authProvider = new TokenCredentialAuthenticationProvider(credential, { scopes: ["https://graph.microsoft.com/.default"] });
     const graphClient = Client.initWithMiddleware({ authProvider: authProvider });
 
-    console.log('Token-> ${turnContext.Activity.Value}');
+    console.log(`Token-> ${context.activity.value}`);
     // 2023-12-20,30,Least@42tcm.onmicrosoft.com
     let dParams = query.parameters[0].value.split(",");
     let tDate = dParams[0];
@@ -50,8 +67,6 @@ export class SearchApp extends TeamsActivityHandler {
     let timeInterval = dParams[1];
     let attendeesString = dParams[2];
 
-    console.clear();
-    console.log("**************");
     console.log("");
 
     // let timeSlots = divideTimeRange(startTime, endTime, 30)
@@ -75,7 +90,7 @@ export class SearchApp extends TeamsActivityHandler {
 
     const response = await graphClient.api('/users/tushar_mathur@42tcm.onmicrosoft.com/calendar/getSchedule')
       .post(scheduleInformation);
-      
+
     console.log(response);
     console.log("Hi");
 
