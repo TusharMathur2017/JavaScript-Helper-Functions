@@ -34,21 +34,40 @@ export class SearchApp extends TeamsActivityHandler {
     context: TurnContext,
     query: MessagingExtensionQuery
   ): Promise<MessagingExtensionResponse> {
-
-    let continuationToken: string;
-    const members = [];
-    do {
-      var pagedMembers = await TeamsInfo.getPagedMembers(context, 100, continuationToken);
-      continuationToken = pagedMembers.continuationToken;
-      // members.push(...pagedMembers.members.filter(m => !!m.email));
-      members.push(...pagedMembers.members);
-    }
-    while (continuationToken !== undefined)
-
     console.clear();
-    members.forEach(eachMember => {
-      console.log(`Users-> ${eachMember.email}`);
-    });
+
+
+    // let continuationToken: string;
+    // let chatMembers = [];
+    // do {
+    //   var pagedMembers = await TeamsInfo.getPagedMembers(context, 100, continuationToken);
+    //   continuationToken = pagedMembers.continuationToken;
+    //   chatMembers.push(...pagedMembers.members.filter(m => !!m.email));
+    // }
+    // while (continuationToken !== undefined)
+    // chatMembers.forEach(eachMember => {
+    //   console.log(`Chat members-> ${eachMember.email}`);
+    // });
+
+    // Param 1
+    // Copilot user Timezone context._activity.localTimestamp -> Wed Jan 03 2024 16:56:49 GMT+0530 (India Standard Time)
+
+
+
+
+
+    let copilotUserSlots = '';
+
+    let copilotUserAvail = '0000';
+    let invitedUserAvail = '0010';
+
+
+
+
+
+
+
+
 
     const credential = new ClientSecretCredential(
       process.env.TEAMS_APP_TENANT_ID,
@@ -58,8 +77,8 @@ export class SearchApp extends TeamsActivityHandler {
     const authProvider = new TokenCredentialAuthenticationProvider(credential, { scopes: ["https://graph.microsoft.com/.default"] });
     const graphClient = Client.initWithMiddleware({ authProvider: authProvider });
 
-    console.log(`Token-> ${context.activity.value}`);
-    // 2023-12-20,30,Least@42tcm.onmicrosoft.com
+    // Param 2
+    // 2023-12-30,30,Least@42tcm.onmicrosoft.com
     let dParams = query.parameters[0].value.split(",");
     let tDate = dParams[0];
     let startTime = `${tDate}T09:00:00`;
@@ -69,9 +88,10 @@ export class SearchApp extends TeamsActivityHandler {
 
     console.log("");
 
-    // let timeSlots = divideTimeRange(startTime, endTime, 30)
-    // // console.log(timeSlots.join(", "));
-    // console.log("");
+    let timeSlots = divideTimeRange(startTime, endTime, 30);
+    // console.log(timeSlots.join(", "));
+    console.log(timeSlots);
+    console.log("");
 
     let scheduleInformation = {
       schedules: ['Least@42tcm.onmicrosoft.com', 'tushar_mathur@42tcm.onmicrosoft.com'],
@@ -85,16 +105,16 @@ export class SearchApp extends TeamsActivityHandler {
       },
       availabilityViewInterval: timeInterval
     };
-    console.log(scheduleInformation);
     console.log("");
 
-    const response = await graphClient.api('/users/tushar_mathur@42tcm.onmicrosoft.com/calendar/getSchedule')
-      .post(scheduleInformation);
+    let invokeAPI = `/users/${chatMembers[0].email}/calendar/getSchedule`;
+    const response = await graphClient.api(invokeAPI).post(scheduleInformation);
+    // const response = await graphClient.api(invokeAPI).get();
+    // let invokeAPI = `/users/${chatMembers[0].email}/findMeetingTimes`
 
-    console.log(response);
-    console.log("Hi");
-
-    // response.availabilityView.split('')
+    response.value.forEach(element => {
+      console.log(`${element.scheduleId} -> Available: ${element.availabilityView.split('')}`);
+    });
 
     const attachments = [];
     response.data.objects.forEach((obj) => {
