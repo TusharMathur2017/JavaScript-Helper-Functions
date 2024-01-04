@@ -9,7 +9,7 @@ import {
   ConfigurationBotFrameworkAuthentication,
   TurnContext,
   MemoryStorage,
-  TeamsSSOTokenExchangeMiddleware
+  // TeamsSSOTokenExchangeMiddleware
 } from "botbuilder";
 
 import { SearchApp } from "./searchApp";
@@ -31,7 +31,7 @@ const botFrameworkAuthentication = new ConfigurationBotFrameworkAuthentication(
 );
 const adapter = new CloudAdapter(botFrameworkAuthentication);
 const memoryStorage = new MemoryStorage();
-const tokenExchangeMiddleware = new TeamsSSOTokenExchangeMiddleware(memoryStorage, process.env.CONNECTION_NAME);
+// const tokenExchangeMiddleware = new TeamsSSOTokenExchangeMiddleware(memoryStorage, process.env.CONNECTION_NAME);
 
 const onTurnErrorHandler = async (context: TurnContext, error: Error) => {
   console.error(`\n [onTurnError] unhandled error: ${error}`);

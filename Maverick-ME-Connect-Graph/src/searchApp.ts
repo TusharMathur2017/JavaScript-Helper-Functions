@@ -56,12 +56,10 @@ export class SearchApp extends TeamsActivityHandler {
 
 
 
-    let copilotUserSlots = '';
+    // let copilotUserSlots = '';
 
-    let copilotUserAvail = '0000';
-    let invitedUserAvail = '0010';
-
-
+    // let copilotUserAvail = '0000';
+    // let invitedUserAvail = '0010';
 
 
 
@@ -69,66 +67,68 @@ export class SearchApp extends TeamsActivityHandler {
 
 
 
-    const credential = new ClientSecretCredential(
-      process.env.TEAMS_APP_TENANT_ID,
-      process.env.BOT_ID,
-      process.env.BOT_PASSWORD
-    );
-    const authProvider = new TokenCredentialAuthenticationProvider(credential, { scopes: ["https://graph.microsoft.com/.default"] });
-    const graphClient = Client.initWithMiddleware({ authProvider: authProvider });
 
-    // Param 2
-    // 2023-12-30,30,Least@42tcm.onmicrosoft.com
-    let dParams = query.parameters[0].value.split(",");
-    let tDate = dParams[0];
-    let startTime = `${tDate}T09:00:00`;
-    let endTime = `${tDate}T18:00:00`;
-    let timeInterval = dParams[1];
-    let attendeesString = dParams[2];
+
+    // const credential = new ClientSecretCredential(
+    //   process.env.TEAMS_APP_TENANT_ID,
+    //   process.env.BOT_ID,
+    //   process.env.BOT_PASSWORD
+    // );
+    // const authProvider = new TokenCredentialAuthenticationProvider(credential, { scopes: ["https://graph.microsoft.com/.default"] });
+    // const graphClient = Client.initWithMiddleware({ authProvider: authProvider });
+
+    // // Param 2
+    // // 2023-12-30,30,Least@42tcm.onmicrosoft.com
+    // let dParams = query.parameters[0].value.split(",");
+    // let tDate = dParams[0];
+    // let startTime = `${tDate}T09:00:00`;
+    // let endTime = `${tDate}T18:00:00`;
+    // let timeInterval = dParams[1];
+    // let attendeesString = dParams[2];
 
     console.log("");
 
-    let timeSlots = divideTimeRange(startTime, endTime, 30);
-    // console.log(timeSlots.join(", "));
-    console.log(timeSlots);
-    console.log("");
+    // let timeSlots = divideTimeRange(startTime, endTime, 30);
+    // // console.log(timeSlots.join(", "));
+    // console.log(timeSlots);
+    // console.log("");
 
-    let scheduleInformation = {
-      schedules: ['Least@42tcm.onmicrosoft.com', 'tushar_mathur@42tcm.onmicrosoft.com'],
-      startTime: {
-        dateTime: startTime,
-        timeZone: 'India Standard Time'
-      },
-      endTime: {
-        dateTime: endTime,
-        timeZone: 'India Standard Time'
-      },
-      availabilityViewInterval: timeInterval
-    };
-    console.log("");
+    // let scheduleInformation = {
+    //   schedules: ['Least@42tcm.onmicrosoft.com', 'tushar_mathur@42tcm.onmicrosoft.com'],
+    //   startTime: {
+    //     dateTime: startTime,
+    //     timeZone: 'India Standard Time'
+    //   },
+    //   endTime: {
+    //     dateTime: endTime,
+    //     timeZone: 'India Standard Time'
+    //   },
+    //   availabilityViewInterval: timeInterval
+    // };
+    // console.log("");
 
-    let invokeAPI = `/users/${chatMembers[0].email}/calendar/getSchedule`;
-    const response = await graphClient.api(invokeAPI).post(scheduleInformation);
+    // let invokeAPI = `/users/${chatMembers[0].email}/calendar/getSchedule`;
+    // const response = await graphClient.api(invokeAPI).post(scheduleInformation);
     // const response = await graphClient.api(invokeAPI).get();
     // let invokeAPI = `/users/${chatMembers[0].email}/findMeetingTimes`
 
-    response.value.forEach(element => {
-      console.log(`${element.scheduleId} -> Available: ${element.availabilityView.split('')}`);
-    });
+    // response.value.forEach(element => {
+    //   console.log(`${element.scheduleId} -> Available: ${element.availabilityView.split('')}`);
+    // });
 
     const attachments = [];
-    response.data.objects.forEach((obj) => {
-      const template = new ACData.Template(helloWorldCard);
-      const card = template.expand({
-        $root: {
-          name: obj.package.name,
-          description: obj.package.description,
-        },
-      });
-      const preview = CardFactory.heroCard(obj.package.name);
-      const attachment = { ...CardFactory.adaptiveCard(card), preview };
-      attachments.push(attachment);
-    });
+    // response.data.objects.forEach((obj) => {
+    //   const template = new ACData.Template(helloWorldCard);
+    //   const card = template.expand({
+    //     $root: {
+    //       name: obj.package.name,
+    //       description: obj.package.description,
+    //     },
+    //   });
+    //   const preview = CardFactory.heroCard(obj.package.name);
+    //   const attachment = { ...CardFactory.adaptiveCard(card), preview };
+    //   attachments.push(attachment);
+    // });
 
     return {
       composeExtension: {

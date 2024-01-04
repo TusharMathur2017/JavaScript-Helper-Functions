@@ -1,0 +1,6 @@
+# TeamsFx files
+.localConfigs
+
+# dependencies
+node_modules/
+appPackage/build
