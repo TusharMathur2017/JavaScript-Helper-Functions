@@ -1,6 +1,12 @@
 # TeamsFx files
 .localConfigs
+appPackage/build
 
 # dependencies
 node_modules/
-appPackage/build
+
+# misc
+.DS_Store
+
+# build
+lib/
